@@ -10,7 +10,6 @@ import './styles/App.scss';
 class App extends Component {
 
 	state = {
-		cartId: 1,
 		loading: true,
 		data: [],
 		count: 0,
@@ -61,7 +60,6 @@ class App extends Component {
 	addToCart(e) {
 		this.setState((state) => {
 			return {
-				cartId: state.cartId + 1,
 				total: Math.round((state.total + e.price) * 100) / 100,
 				count: state.count + 1,
 				cart: state.cart.concat(e)
@@ -70,21 +68,28 @@ class App extends Component {
 	}
 
 	removeFromCart(e) {
-		this.setState((state) => {
-			return {
-				total: Math.round((state.total - e.price) * 100) / 100,
-				count: state.count - 1,
-				cart: this.state.cart.filter(element => e.cartId !== element.cartId)
-			}
-		})
+		let array = [...this.state.cart];
+		let index = array.indexOf(e)
+
+		if (index !== -1) {
+			array.splice(index, 1);
+
+			this.setState((state) => {
+				return {
+					total: Math.round((state.total - e.price) * 100) / 100,
+					count: state.count - 1,
+					cart: array
+				}
+			})
+		}
 	}
 
 	renderListData(url) {
-		return url.map(product => {
+		return url.map((product, index)=> {
 			return (
 				<Product
-					id={`produto-${this.state.cartId}`}
-					key={this.state.cartId}
+					key={index}
+					id={product.id.toString()}
 					src={require(`./assets/games/${product.image}`)}
 					alt={product.name}
 					title={product.name}
@@ -97,11 +102,11 @@ class App extends Component {
 	}
 
 	renderCartData(url) {
-		return url.map(product => {
+		return url.map((product, index) => {
 			return (
 				<Product
-					id={`produto-${this.state.cartId}`}
-					key={this.state.cartId}
+					key={index}
+					id={product.id.toString()}
 					src={require(`./assets/games/${product.image}`)}
 					alt={product.name}
 					title={product.name}
@@ -145,7 +150,8 @@ class App extends Component {
 							</Header>
 
 							{this.state.cart &&
-								this.renderCartData(this.state.cart, remove, false)}
+								this.renderCartData(this.state.cart, remove, false)
+							}
 						</Cart>
 
 					</main>
