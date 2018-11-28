@@ -1,5 +1,4 @@
-export default
-  [
+const api =  [
       {
         id: 312,
         name: "Super Mario Odyssey",
@@ -64,3 +63,5 @@ export default
         image: "horizon-zero-dawn.png"
       }
   ]
+
+export default api;
