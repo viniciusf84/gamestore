@@ -1,0 +1,8 @@
+/* General */
+@import '~normalize-scss/sass/normalize/import-now';
+@import 'layout';
+
+/* Components styles */
+@import './src/components/Header/header';
+@import './src/components/Cart/cart';
+@import './src/components/Product/products';

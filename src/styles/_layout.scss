@@ -1,0 +1,54 @@
+/*** Layout ***/
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../assets/fonts/OpenSans-Regular.ttf')  format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Open Sans Bold';
+    src: url('../assets/fonts/OpenSans-Bold.ttf')  format('truetype');
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Open Sans Bold';
+}
+
+.main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.btn {
+    border-radius: 3px;
+    border: none;
+    font-size: 14px;
+
+    &.big {
+        height: 50px;
+        line-height: 50px;
+    }
+
+    &.blue {
+        color: #fff;
+        background: #54A3FF;
+        font-weight: bold;
+    }
+}
+
+/* \Layout */

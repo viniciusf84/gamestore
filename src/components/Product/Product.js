@@ -1,8 +1,8 @@
 import React from 'react';
 
-const product = (props) => {	
+const product = (props) => {
 	return (
-		<div id={props.id} className="product-box alignCenter" onClick={props.onClick}>
+		<div id={props.id} className="product-box">
 			<div className="image-wrapper">
 				<img key={props.key} src={props.src} alt={props.alt} />
 			</div>
@@ -10,9 +10,11 @@ const product = (props) => {
 	    		<h3>{props.title}</h3>
 	    		<span className="price">R$ {props.price}</span>
 	    	</div>
-	    	<div className="add-me">{props.hover}</div>
+	    	<button className="add-me white-button" onClick={props.onClick} >
+				{props.hoverText}
+			</button>
 		</div>
-	)	
+	)
 };
 
 export default product;
