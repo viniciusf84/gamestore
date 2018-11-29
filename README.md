@@ -1,5 +1,3 @@
-Este projeto foi criado pelo Create React App
-
 ## Para rodar
 
 In the project directory, you can run:
