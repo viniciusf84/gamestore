@@ -5,10 +5,14 @@ const cart = (props) => {
         <aside>
             <section className="shopping-cart">
                 {props.children}
-                <p>subtotal: <strong>R$ {props.total}</strong></p>
-                <p>frete: <strong>R$ {props.shipping }</strong></p>
-                <p>total: <strong>R$ {props.total + props.shipping}</strong></p>
-                <button className="btn big blue">finalizar compra</button>
+                {!props.isEmpty &&
+                <div className="calc">
+                    <p>subtotal: <strong>R$ {props.total}</strong></p>
+                    <p>frete: <strong>R$ {props.shipping }</strong></p>
+                    <p>total: <strong className="big">R$ {props.total + props.shipping}</strong></p>
+                    <button className="btn big blue">finalizar compra</button>
+                </div>
+                }
             </section>
         </aside>
     );

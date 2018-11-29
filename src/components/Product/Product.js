@@ -10,7 +10,7 @@ const product = (props) => {
 	    		<h3>{props.title}</h3>
 	    		<span className="price">R$ {props.price}</span>
 	    	</div>
-	    	<button className="add-me white-button" onClick={props.onClick} >
+	    	<button className="action" onClick={props.onClick} >
 				{props.hoverText}
 			</button>
 		</div>

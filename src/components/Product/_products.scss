@@ -15,6 +15,7 @@
 
     .info {
         text-align: center;
+        @include transition(opacity, .2s, ease-in);
     }
 
     h3 {
@@ -30,11 +31,13 @@
         font-weight: bold;
     }
 
-    .add-me {
+    .action {
         font-family: 'Open Sans Bold';
         font-size: 16px;
         color: #3487DC;
-        visibility: hidden;
+        background: none;
+        border: none;
+        opacity: 0;
         position: absolute;
         left: 0;
         bottom: 20px;
@@ -43,28 +46,36 @@
         height: 40px;
         line-height: 40px;
         cursor: pointer;
-    }
-
-    &:hover {
-        &>.info {
-            visibility: hidden;
-        }
-
-        &>.add-me {
-            visibility: visible;
-        }
+        @include transition(opacity, .3s, ease-in);
+        @include transition(color, .1s, ease-out);
     }
 
     .image-wrapper {
         background-color: #eee;
         padding: 25px 41px;
         border-radius: 3px;
+        text-align: center;
+        @include transition(background-color, .1s, ease-in);
     }
 
-    .white-button {
-        background: none;
-        border: none;
-    }
-}
+    &:hover {
+
+        .image-wrapper {
+            background-color: #ccc;
+        }
+
+        &>.info {
+            opacity: 0;
+        }
+
+        &>.action {
+            opacity: 1;
+
+            &:hover {
+                color: #54A3FF;
+            }
+        }
+    } // hover
+} // .product-box
 
 /* \Products */
