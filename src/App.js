@@ -152,31 +152,37 @@ class App extends Component {
 								<OrderBy  change={ e => this.sortItems(e.target.value)}/>
 							</Header>
 
-							{this.renderListData(this.state.data)}
+							{this.state.loading ?
+							<p className="loading alignCenter">Carregando produtos</p>
+							:
+							this.renderListData(this.state.data)}
 						</section>
 
-						<Cart
-							total={this.state.total}
-							shipping={this.state.freeShipping ? +0.00 : this.state.shipping}
-							count={this.state.count}
-							products={this.state.cart}
-							isEmpty={this.state.count === 0}
-						>
-							<Header size="h4" title="Carrinho">
-								{this.state.count > 0 &&
-									<span className="count">({this.state.count} itens)</span>
+						<aside>
+							<Cart
+								total={this.state.total}
+								shipping={this.state.freeShipping ? +0.00 : this.state.shipping}
+								count={this.state.count}
+								products={this.state.cart}
+								isEmpty={this.state.count === 0}
+							>
+								<Header size="h4" title="Carrinho">
+									{this.state.count > 0 &&
+										<span className="count">({this.state.count} itens)</span>
+									}
+								</Header>
+
+
+								<Empty isEmpty={this.state.count === 0} />
+
+								{this.state.cart &&
+								<div className="list">
+									{this.renderCartData(this.state.cart, remove, false)}
+								</div>
 								}
-							</Header>
 
-
-							<Empty isEmpty={this.state.count === 0} />
-
-
-							{this.state.cart &&
-								this.renderCartData(this.state.cart, remove, false)
-							}
-
-						</Cart>
+							</Cart>
+						</aside>
 
 					</main>
 

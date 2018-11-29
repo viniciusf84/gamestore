@@ -65,5 +65,5 @@ const api = [
 ]
 
 export const fetchData = () => {
-  return new Promise( resolve => setTimeout(resolve(api), 5000) );
+  return new Promise( resolve => setTimeout(() => resolve(api), 2000) );
 }
