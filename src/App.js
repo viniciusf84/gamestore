@@ -28,7 +28,6 @@ class App extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-
 		if (prevState.count !== this.state.count) {
 			if (this.state.total > 250) {
 				this.setState({
@@ -44,7 +43,6 @@ class App extends Component {
 				shipping: this.state.count * 10
 			})
 		}
-
 	}
 
 	getApiData = async (url) => {
@@ -63,7 +61,7 @@ class App extends Component {
 	addToCart(e) {
 		this.setState((state) => {
 			return {
-				total: Math.round((state.total + e.price) * 100) / 100,
+				total: this.priceFormat(state.total + e.price),
 				count: state.count + 1,
 				cart: state.cart.concat(e)
 			}
@@ -79,7 +77,7 @@ class App extends Component {
 
 			this.setState((state) => {
 				return {
-					total: Math.round((state.total - e.price) * 100) / 100,
+					total: this.priceFormat(state.total - e.price),
 					count: state.count - 1,
 					cart: array
 				}
@@ -131,6 +129,12 @@ class App extends Component {
 		this.setState((state) => {
 			return { data: array  }
 		})
+	}
+
+	priceFormat(x) {
+		let num = Number.parseFloat(x);
+		num = +num.toFixed(2);
+		return num;
 	}
 
 
