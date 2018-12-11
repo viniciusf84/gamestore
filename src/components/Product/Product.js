@@ -8,7 +8,7 @@ const product = (props) => {
 			</div>
 			<div className="info">
 	    		<h3>{props.title}</h3>
-	    		<span className="price">R$ {props.price}</span>
+	    		<span className="price">R$ {props.price.toFixed(2)}</span>
 	    	</div>
 	    	<button className="action" onClick={props.onClick} >
 				{props.hoverText}

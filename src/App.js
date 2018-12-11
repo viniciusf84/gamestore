@@ -85,6 +85,13 @@ class App extends Component {
 		}
 	}
 
+	priceFormat(x) {
+		let num = Number.parseFloat(x);
+		num = +num.toFixed(2);
+
+		return num;
+	}
+
 	renderListData(url) {
 		return url.map((product, index)=> {
 			return (
@@ -129,12 +136,6 @@ class App extends Component {
 		this.setState((state) => {
 			return { data: array  }
 		})
-	}
-
-	priceFormat(x) {
-		let num = Number.parseFloat(x);
-		num = +num.toFixed(2);
-		return num;
 	}
 
 
