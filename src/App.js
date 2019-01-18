@@ -171,12 +171,12 @@ class App extends Component {
 								products={this.state.cart}
 								isEmpty={this.state.count === 0}
 							>
+
 								<Header size="h4" title="Carrinho">
 									{this.state.count > 0 &&
 										<span className="count">({this.state.count} itens)</span>
 									}
 								</Header>
-
 
 								<Empty isEmpty={this.state.count === 0} />
 
