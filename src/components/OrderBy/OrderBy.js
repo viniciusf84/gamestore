@@ -1,8 +1,9 @@
 import React from 'react';
 
-const orderBy = (props) => {
+export default function orderBy(props) {
+	
 	return (
-		<select id="orderby" className="order-by" onChange={props.change}>
+		<select id="orderby" className="order-by" onChange={props.onChange}>
 			<option value="">Ordenar por</option>
 			<option value="score">Mais populares</option>
 			<option value="price">Preço</option>
@@ -10,5 +11,3 @@ const orderBy = (props) => {
 		</select>
 	)
 };
-
-export default orderBy;

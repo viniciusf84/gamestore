@@ -1,17 +1,15 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import cartIcon from '../../assets/svg/cart-icon.svg'
 
-const emptyCart = (props) => {
+export default function emptyCart(props) {
+	
 	return (
-        <Fragment>
-            {props.isEmpty &&
-            <div className="empty">
-                <img src={cartIcon} />
-                <p>Até o momento,<br /> o seu carrinho está vazio</p>
-            </div>
-            }
-        </Fragment>
-    );
+		props.isEmpty && (
+			<div className="empty">
+				<img src={cartIcon} alt="cart icon" />
+				<p>Até o momento,<br /> o seu carrinho está vazio</p>
+			</div>
+		)
+	);
 
-}
-export default emptyCart;
+};

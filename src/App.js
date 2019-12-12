@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fetchData } from './utils/api';
 import Header from './components/Header/Header';
 import Product from './components/Product/Product';
@@ -6,196 +6,142 @@ import Cart from './components/Cart/Cart';
 import Empty from './components/Cart/Empty';
 import OrderBy from './components/OrderBy/OrderBy';
 
-/** Styles **/
+/** shared */
+import {priceFormat} from './utils/shared';
+
+/** Styles */
 import './styles/App.scss';
 
-class App extends Component {
+export default function App() {
 
-	state = {
-		loading: true,
-		data: [],
-		sort: '',
-		count: 0,
-		cart: [],
-		shipping: 0,
-		freeShipping: false,
-		subtotal: 0,
-		total: 0,
-	}
+	const [isLoading, setIsLoading] = useState(true);
+	const [data, setData] = useState([]);
+	const [count, setCount] = useState(0);
+	const [cart, setCart] = useState([]);
+	const [sorted, setSorted] = useState(null)
+	const [shipping, setShipping] = useState(0);
+	const [freeShipping, setFreeShipping] = useState(false);
+	const [total, setTotal] = useState(0);	
 
-	componentDidMount() {
-		this.getApiData(fetchData());
-	}
+	const sortedData = data.sort((a, b) => (
+		(a[sorted] < b[sorted]) ? -1 : (a[sorted] > b[sorted]) ? 1 : 0
+	));	
 
-	componentDidUpdate(prevProps, prevState) {
-		if (prevState.count !== this.state.count) {
-			if (this.state.total > 250) {
-				this.setState({
-					freeShipping: true
-				})
-			} else {
-				this.setState({
-					freeShipping: false
-				});
-			}
-
-			this.setState({
-				shipping: this.state.count * 10
-			})
-		}
-	}
-
-	getApiData = async (url) => {
-		this.setState({
-			loading: true
-		});
+	async function getApiData(url) {
+		setIsLoading(true);
 
 		const data = await url;
 
-		this.setState({
-			data,
-			loading: false
-		})
+		try {
+			setData(data);			
+		} catch(err) {
+			console.log(err);
+		}
+		
+		setIsLoading(false);
 	}
 
-	addToCart(e) {
-		this.setState((state) => {
-			return {
-				total: this.priceFormat(state.total + e.price),
-				count: state.count + 1,
-				cart: state.cart.concat(e)
-			}
-		})
+	function addToCart(e) {
+		setTotal(total + e.price);
+		setCount(count + 1);
+		setCart([...cart, e]);		
 	}
 
-	removeFromCart(e) {
-		let array = [...this.state.cart];
+	function removeFromCart(e) {
+		let array = [...cart];
 		let index = array.indexOf(e)
 
 		if (index !== -1) {
 			array.splice(index, 1);
 
-			this.setState((state) => {
-				return {
-					total: this.priceFormat(state.total - e.price),
-					count: state.count - 1,
-					cart: array
-				}
-			})
+			setTotal(priceFormat(total - e.price));
+			setCount(count -1);
+			setCart(array);
 		}
+	}	
+
+	function renderDataList(list, hoverText, func) {
+		return list.map((product, index) => (			
+			<Product
+				key={index}
+				id={product.id.toString()}
+				src={require(`./assets/games/${product.image}`)}
+				alt={product.name}
+				title={product.name}
+				price={product.price}
+				hoverText={hoverText}
+				onClick={e => func(product)}
+			/>
+		))
 	}
 
-	priceFormat(x) {
-		let num = Number.parseFloat(x);
-		num = +num.toFixed(2);
+	useEffect(() => {
+		getApiData(fetchData());
+	}, []);
 
-		return num;
-	}
+	useEffect(() => {
+		setFreeShipping(total > 250);						
 
-	renderListData(url) {
-		return url.map((product, index)=> {
-			return (
-				<Product
-					key={index}
-					id={product.id.toString()}
-					src={require(`./assets/games/${product.image}`)}
-					alt={product.name}
-					title={product.name}
-					price={product.price}
-					hoverText="adicionar ao carrinho"
-					onClick={e => this.addToCart(product)}
-				/>
-			)
-		})
-	}
+		setShipping(count * 10);	
+	}, [count]);
 
-	renderCartData(url) {
-		return url.map((product, index) => {
-			return (
-				<Product
-					key={index}
-					id={product.id.toString()}
-					src={require(`./assets/games/${product.image}`)}
-					alt={product.name}
-					title={product.name}
-					price={product.price}
-					onClick={e => this.removeFromCart(product)}
-				/>
-			)
-		})
-	}
+	useEffect(() => {	
+				
+		setData(sortedData);
 
-	sortItems(parameter) {
-		const array = this.state.data.sort((a, b) => {
-			if(a[parameter] < b[parameter]) { return -1; }
-			if(a[parameter] > b[parameter]) { return 1; }
-			return 0;
-			}
-		);
+	}, [sorted])
 
-		this.setState((state) => {
-			return { data: array  }
-		})
-	}
+	return (
+		<div id="App" className="app">
 
+			<div className="container">
 
-	render() {
+				<main className="main">
 
-		const add = "adicionar ao carrinho";
-		const remove = "x";
+					<section id="count" className="product-list">
 
-		return (
-			<div id="App" className="app">
+						<Header size="h1" title="Games">
+							<OrderBy onChange={e => setSorted(e.target.value)}/>
+						</Header>
 
-				<div className="container">
+						{isLoading ? (
+							<p className="loading alignCenter">Carregando produtos</p>
+						)	: (
+							renderDataList(data, 'adicionar ao carrinho', addToCart)
+						)}
+					</section>
 
-					<main className="main">
+					<aside>
+						<Cart
+							total={total}
+							shipping={freeShipping ? +0.00 : shipping}
+							count={count}
+							products={cart}
+							isEmpty={count === 0}
+						>
 
-						<section id="count" className="product-list">
-
-							<Header size="h1" title="Games">
-								<OrderBy  change={ e => this.sortItems(e.target.value)}/>
+							<Header size="h4" title="Carrinho">
+								{count > 0 &&
+									<span className="count">({count} itens)</span>
+								}
 							</Header>
 
-							{this.state.loading ?
-							<p className="loading alignCenter">Carregando produtos</p>
-							:
-							this.renderListData(this.state.data)}
-						</section>
+							<Empty isEmpty={count === 0} />
 
-						<aside>
-							<Cart
-								total={this.state.total}
-								shipping={this.state.freeShipping ? +0.00 : this.state.shipping}
-								count={this.state.count}
-								products={this.state.cart}
-								isEmpty={this.state.count === 0}
-							>
+							{cart &&
+							<div className="list">
+								{renderDataList(cart, false, removeFromCart)}
+							</div>
+							}
 
-								<Header size="h4" title="Carrinho">
-									{this.state.count > 0 &&
-										<span className="count">({this.state.count} itens)</span>
-									}
-								</Header>
+						</Cart>
+					</aside>
 
-								<Empty isEmpty={this.state.count === 0} />
-
-								{this.state.cart &&
-								<div className="list">
-									{this.renderCartData(this.state.cart, remove, false)}
-								</div>
-								}
-
-							</Cart>
-						</aside>
-
-					</main>
-
-				</div>
+				</main>
 
 			</div>
-		);
-	}
+
+		</div>		
+	)
 }
 
-export default App;

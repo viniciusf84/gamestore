@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Header = (props) => {	
-	const Tag = props.size
+export default function Header(props) {	
+	const Tag = props.size;
 	
 	return (		
 		<header className="header">
@@ -12,7 +12,5 @@ const Header = (props) => {
 		</header>
 	)	
 };
-
-export default Header;
 
 
