@@ -1,4 +1,4 @@
-## Para rodar
+## Start 
 
 In the project directory, you can run:
 
